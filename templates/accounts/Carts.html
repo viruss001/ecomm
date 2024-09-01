@@ -1,0 +1,89 @@
+{% extends "base/base.html" %}
+
+
+{% block start %}
+
+<!-- cart -->
+<div class="container mt-5 mx-5 d-flex ">
+
+
+  <div class="col-lg-9 ">
+    <div class="card border shadow-0 ">
+      <div class="m-4 " >
+        <h4 class="card-title mb-4">Your cart</h4>
+        {% for cart in cartsitem %}
+        <div class="row gy-3 mb-4" >
+          <div class="col-lg-5">
+            <div class="me-lg-5">
+              <div class="d-flex">
+                <img src="https://mdbootstrap.com/img/bootstrap-ecommerce/items/11.webp" class="border rounded me-3"
+                  style="width: 96px; height: 96px;" />
+                <div class="">
+                  <a href="#" class="nav-link">{{cart.product.product_name | capfirst}}</a>
+                 <p class="h6 mx-3">{{cart.size_varient}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+            <div class="">
+              <select style="width: 100px;" class="form-select me-4">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+              </select>
+            </div>
+            <div class="mx-3">
+              <span class="h6">${{cart.get_product_price}}.00</span> <br />
+
+            </div>
+          </div>
+          <div
+            class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+            <div class="float-md-end">
+              <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
+                  class="fas fa-heart fa-lg px-1 text-secondary"></i></a>
+              <a href="{%url 'remove_to_cart' cart.uid%}" class="btn btn-light border text-danger icon-hover-danger"> Remove</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="mx-3">
+    <form method="POST">{%include 'base/alert.html'%}
+      {% csrf_token %}
+      
+    <div class="form-group card" > <label>Have coupon?</label>
+      <div class="input-group"> <input type="text" class="form-control coupon" name="coupon" placeholder="Coupon code"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
+    {% if carts.coupon %}
+      <a href="{% url 'remove_coupon' carts.uid %}" class="btn btn-success " style="width: 10vw; margin:5% 0 5% 5%
+      ">{{carts.coupon.coupon_code}}</a>
+      {%endif %}
+    </div>
+  </form>
+  <div class="card">
+    <div class="card-body">
+    <dl class="dlist-align">
+    <dt>Total price:</dt>
+    <dd class="text-right ml-3">${{price}}.00</dd>
+    </dl>
+    <dl class="dlist-align">
+    <dt>Discount:</dt>
+    <dd class="text-right text-danger ml-3">- ${% if carts.coupon %}{{carts.get_discount}}{%endif %}.00</dd>
+    </dl>
+    <dl class="dlist-align">
+    <dt>Total:</dt>
+    <dd class="text-right text-dark b ml-3"><strong>${{carts.get_cart_totalwith}}.00</strong></dd>
+    </dl>
+    <hr> <a href="#" class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Make Purchase </a> 
+    <a href="/" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Continue Shopping</a>
+    </div>
+    </div>
+  </div>
+ 
+</div>
+
+{% endblock %}
