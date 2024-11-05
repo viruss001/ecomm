@@ -7,6 +7,11 @@ import uuid
 from product.models import Product,ColorVariant,SizeVarient,Coupon
 from base.emails import send_account_activation_email
 # Create your models here.
+
+
+
+
+
 class profile(BaseModel):
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
     is_email_verified=models.BooleanField(default=False)
@@ -15,6 +20,12 @@ class profile(BaseModel):
 
     def get_cart_count(self):
         return CartItem.objects.filter(cart__is_paid=False,cart__user=self.user).count()
+    
+
+
+
+
+
 class Cart(BaseModel):
     user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='carts')
     coupon=models.ForeignKey(Coupon,related_name="cart_coupon",on_delete=models.SET_NULL ,blank=True ,null=True)
@@ -50,18 +61,6 @@ class Cart(BaseModel):
             return self.coupon.discount_price
 
 
-@receiver(post_save , sender = User)
-def  send_email_token(sender , instance , created , **kwargs):
-    try:
-        if created:
-            email_token = str(uuid.uuid4())
-            profile.objects.create(user = instance , email_token = email_token)
-            email = instance.email
-            # instance.profile.save()
-            send_account_activation_email(email , email_token)
-
-    except Exception as e:
-        print(e)
 
 
 class CartItem(BaseModel):
@@ -78,3 +77,16 @@ class CartItem(BaseModel):
         return sum(price)
 
 
+# it is trigger when user is created then this function is trigger
+@receiver(post_save , sender = User)
+def  send_email_token(sender , instance , created , **kwargs):
+    try:
+        if created:
+            email_token = str(uuid.uuid4())
+            profile.objects.create(user = instance , email_token = email_token)
+            email = instance.email
+            # instance.profile.save()
+            send_account_activation_email(email , email_token)
+
+    except Exception as e:
+        print(e)

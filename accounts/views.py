@@ -123,3 +123,4 @@ def remove_coupon(request,uid):
     cart.save()
     messages.success(request,"coupon is removed")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+# admin admin pass
