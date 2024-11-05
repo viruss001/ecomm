@@ -3,7 +3,7 @@ from product.models import Product
 
 # Create your views here.
 def get_product(request , slug):
-    print(request.user.profile.get_cart_count)
+    # print(request.user.profile.get_cart_count)
     try:
         product = Product.objects.get(slug =slug)
         context = {'product' : product}
