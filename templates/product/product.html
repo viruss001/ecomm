@@ -11,11 +11,11 @@
             <aside class="col-md-6">
     <article class="gallery-wrap"> 
     <div class="img-big-wrap">
-      <div> <a href="#"><img src="/media/{{product.product_image.first.img}}"></a></div>
+      <div> <a href="#"><img id="photos" src="/media/{{product.product_image.first.img}}"></a></div>
     </div> <!-- slider-product.// -->
-    <div class="thumbs-wrap">
+    <div class="thumbs-wrap" >
       {% for image in product.product_image.all %}
-      <a href="#" class="item-thumb"> <img src="/media/{{image.img}}"></a>
+      <a href="#" class="item-thumb"> <img src="/media/{{image.img}} " ></a>
       
       {% endfor %}
 
@@ -123,6 +123,7 @@
       function get_correct_price(size){
         window.location.href=window.location.pathname+`?size=${size}`
       }
+     
     </script>
 
 {% endblock %}
